@@ -1,10 +1,5 @@
-variable "do_token" {}
 variable "ssh_fingerprint" {}
 variable "hostname" {}
-
-provider "digitalocean" {
-  token = "${var.do_token}"
-}
 
 resource "digitalocean_droplet" "dokku" {
   image = "ubuntu-14-04-x64"
@@ -14,13 +9,13 @@ resource "digitalocean_droplet" "dokku" {
   ssh_keys = ["${var.ssh_fingerprint}"]
 
   provisioner "file" {
-    source = "../scripts/install-dokku.sh"
-    destination = "/tmp/install-dokku.sh"
+    source = "${path.module}/../scripts/install-dokku.sh"
+    destination = "/root/install-dokku.sh"
   }
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/install-dokku.sh",
-      "HOSTNAME=${var.hostname} /tmp/install-dokku.sh"
+      "chmod +x /root/install-dokku.sh",
+      "HOSTNAME=${var.hostname} /root/install-dokku.sh"
     ]
   }
 }

@@ -1,39 +1,25 @@
 # Dokku Terraform
 
-Install Dokku using Terraform
+Terraform modules to create a [Dokku](http://dokku.viewdocs.io/dokku/) instance.
 
-# Providers
-
-Currently supports DigitalOcean only. I'm planning to add AWS as well.
-
-# Usage
-
-```sh
-cd digitalocean
-
-terraform apply\
-  -var 'do_token=YOUR_DIGITALOCEAN_TOKEN'
-  -var 'ssh_fingerprint=YOUR_SSH_KEY_FINGERPRINT'
-  -var 'hostname=YOUR_BASE_HOSTNAME'
-```
-
-This will create a new Droplet using the standard Ubuntu image, then run
+This will create a new VM using a vanilla Ubuntu image, then run
 [install-dokku.sh](scripts/install-dokku.sh) to install and configure Dokku.
 
-It will also create two DNS records pointing at the IP of your new instance.
-(You need to configure your domain or subdomain to use DigitalOcean's name
-servers for it to actually work)
+It will also create some DNS records pointing at your new instance.
 
-It will take less than 5 minutes, then you should be able to deploy your first
-app like this:
+It will take about 5 minutes to create a new instance from scratch.
 
-```sh
-cd /path/of/your/app
-git remote add dokku dokku@YOUR_BASE_HOSTNAME
-git push dokku master
-```
+## Supported providers
 
-# Cleaning up
+Use the module matching your provider. Provider-specific documentation is
+available in the subdirectories:
 
-If you no longer need this instance, you can easily delete the droplet and the
-associated DNS records using `terraform destroy`.
+* [Digital Ocean](digitalocean/)
+* [AWS](aws/)
+
+Please note the AWS module is more complex and requires you to have a working
+VPC setup on your AWS account.
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE) for full details.
